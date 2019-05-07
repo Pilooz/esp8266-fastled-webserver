@@ -133,6 +133,11 @@ void coolLikeIncandescent( CRGB& c, uint8_t phase)
 CRGB computeOneTwinkle( uint32_t ms, uint8_t salt)
 {
   uint16_t ticks = ms >> (8-twinkleSpeed);
+
+  if (ticks < TWINKLE_FASTCYCLE_THRESHOLD) {
+    ticks = TWINKLE_FASTCYCLE_THRESHOLD;
+  }
+
   uint8_t fastcycle8 = ticks;
   uint16_t slowcycle16 = (ticks >> 8) + salt;
   slowcycle16 += sin8( slowcycle16);
@@ -227,6 +232,7 @@ void drawTwinkles()
       }
     }
   }
+  strip_is_modified = true;
 }
 
 // A mostly red palette with green accents and white trim.

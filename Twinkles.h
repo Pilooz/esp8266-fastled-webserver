@@ -95,6 +95,7 @@ void colortwinkles()
         }
       }
     }
+    strip_is_modified = true;
   }
 }
 

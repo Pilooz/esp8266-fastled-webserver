@@ -54,19 +54,6 @@ ESP8266HTTPUpdateServer httpUpdateServer;
 
 #include "FSBrowser.h"
 
-//CRGB leds[NUM_LEDS];
-
-/*
-typedef struct
-{
-  int data_pin;
-  int num_leds;
-  CRGB leds[60]; 
-  uint8_t  directionFlags[];
-} Strip;
-
-Strip Strips[NUM_STRIPS];
-*/
 CRGB leds[NUM_STRIPS][MAX_LEDS_PER_STRIP];
 
 const uint8_t brightnessCount = 5;
@@ -114,6 +101,8 @@ uint8_t currentPaletteIndex = 0;
 uint8_t gHue = 0; // rotating "base color" used by many of the patterns
 
 CRGB solidColor = CRGB::Blue;
+
+boolean strip_is_modified = false; // True if the at least one of the led of the strip has been modified since last loop
 
 // scale the brightness of all pixels down
 void dimAll(byte value)
@@ -469,8 +458,6 @@ void broadcastString(String name, String value)
   //  webSocketsServer.broadcastTXT(json);
 }
 
-boolean strip_is_modified = false;
-
 void loop() {
   strip_is_modified = false;
   // Add entropy to random number generator; we use a lot of it.
@@ -529,7 +516,6 @@ void loop() {
   // Call the current pattern function once, updating the 'leds' array
   patterns[currentPatternIndex].pattern();
 
-  //FastLED.show();
   // only update if theres a change, cuts out chance of flicker
   if(strip_is_modified){
     FastLED.show();

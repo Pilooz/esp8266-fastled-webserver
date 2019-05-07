@@ -26,10 +26,10 @@ ws.onmessage = function(evt) {
 $(document).ready(function() {
   $("#status").html("Connecting, please wait...");
 
-  $.get(urlBase + "all", function(data) {
+  $.get(urlBase + "all", function (data) {
       $("#status").html("Loading, please wait...");
 
-      $.each(data, function(index, field) {
+      $.each(data, function (index, field) {
         if (field.type == "Number") {
           addNumberField(field);
         } else if (field.type == "Boolean") {
@@ -54,7 +54,7 @@ $(document).ready(function() {
 
       $("#status").html("Ready");
     })
-    .fail(function(errorThrown) {
+    .fail(function (errorThrown) {
       console.log("error: " + errorThrown);
     });
 });
@@ -87,18 +87,18 @@ function addNumberField(field) {
   input.val(field.value);
   slider.val(field.value);
 
-  slider.on("change mousemove", function() {
+  slider.on("change mousemove", function () {
     input.val($(this).val());
   });
 
-  slider.on("change", function() {
+  slider.on("change", function () {
     var value = $(this).val();
     input.val(value);
     field.value = value;
     delayPostValue(field.name, value);
   });
 
-  input.on("change", function() {
+  input.on("change", function () {
     var value = $(this).val();
     slider.val(value);
     field.value = value;
@@ -130,14 +130,109 @@ function addBooleanField(field) {
   btnOn.attr("class", field.value ? "btn btn-primary" : "btn btn-default");
   btnOff.attr("class", !field.value ? "btn btn-primary" : "btn btn-default");
 
-  btnOn.click(function() {
+  btnOn.click(function () {
     setBooleanFieldValue(field, btnOn, btnOff, 1)
   });
-  btnOff.click(function() {
+  btnOff.click(function () {
     setBooleanFieldValue(field, btnOn, btnOff, 0)
   });
 
   $("#form").append(template);
+}
+
+function toggleColorSelector(pattern) {
+  var patterns = [
+    'Solid Color'
+  ];
+  if (patterns.indexOf(pattern) > -1) {
+    $('#colorPaletteTemplate').show();
+    $('#form-group-solidColor').show();
+    $('#colorTemplate').show();
+    $('#form-group-section-solidColor').hide();
+  } else {
+    $('#colorPaletteTemplate').hide();
+    $('#form-group-solidColor').hide();
+    $('#colorTemplate').hide();
+    $('#form-group-section-solidColor').hide();
+  }
+}
+
+function toggleCoolingSelector(pattern) {
+  var coolingPatterns = [
+    'Fire',
+    'Water'
+  ];
+  if (coolingPatterns.indexOf(pattern) > -1) {
+    $('#form-group-section-fire').show();
+    $('#form-group-cooling').show();
+    $('#form-group-sparking').show();
+    $('#form-group-sparking').show();
+  } else {
+    $('#form-group-section-fire').hide();
+    $('#form-group-cooling').hide();
+    $('#form-group-sparking').hide();
+    $('#form-group-sparking').hide();
+  }
+}
+
+function toggleTwinkleSelector(pattern) {
+  var twinklePatterns =
+    [
+      "Rainbow Twinkles",
+      "Snow Twinkles",
+      "Cloud Twinkles",
+      "Incandescent Twinkles"
+    ];
+  if (twinklePatterns.indexOf(pattern) > -1) {
+    $('#form-group-twinkleSpeed').show();
+    $('#form-group-section-twinkles').show();
+    $('#form-group-twinkleDensity').show();
+  } else {
+    $('#form-group-twinkleSpeed').hide();
+    $('#form-group-section-twinkles').hide();
+    $('#form-group-twinkleDensity').hide();
+  }
+}
+
+function toggleSpeedSelector(pattern) {
+  var speedPatterns =
+    [
+      "Sinelon",
+      "Beat"
+    ];
+  if (speedPatterns.indexOf(pattern) > -1) {
+    $('#form-group-speed').show();
+
+  } else {
+    $('#form-group-speed').hide();
+  }
+}
+
+function togglePalletteSelector(pattern) {
+  var pallettePatterns =
+    [
+      "Confetti",
+      "Sinelon",
+      "Beat"
+    ];
+  if (pallettePatterns.indexOf(pattern) > -1) {
+    $('#form-group-palette').show();
+
+  } else {
+    $('#form-group-palette').hide();
+  }
+}
+
+function toggleSections(pattern) {
+  toggleColorSelector(pattern);
+  toggleCoolingSelector(pattern);
+  toggleTwinkleSelector(pattern);
+  toggleSpeedSelector(pattern);
+  togglePalletteSelector(pattern);
+}
+
+$.fn.toggleSections = function (pattern) {
+  toggleSections(pattern);
 }
 
 function addSelectField(field) {
@@ -165,36 +260,48 @@ function addSelectField(field) {
 
   select.val(field.value);
 
-  select.change(function() {
+  select.change(function () {
     var value = template.find("#" + id + " option:selected").index();
     postValue(field.name, value);
+
+    if (id == 'input-pattern') {
+      toggleSections(field.options[select.val()]);
+    }
   });
 
   var previousButton = template.find(".btn-previous");
   var nextButton = template.find(".btn-next");
 
-  previousButton.click(function() {
+  previousButton.click(function () {
     var value = template.find("#" + id + " option:selected").index();
     var count = select.find("option").length;
     value--;
-    if(value < 0)
+    if (value < 0)
       value = count - 1;
     select.val(value);
     postValue(field.name, value);
+    if (id == 'input-pattern') {
+      toggleSections(field.options[select.val()]);
+    }
   });
 
-  nextButton.click(function() {
+  nextButton.click(function () {
     var value = template.find("#" + id + " option:selected").index();
     var count = select.find("option").length;
     value++;
-    if(value >= count)
+    if (value >= count)
       value = 0;
     select.val(value);
     postValue(field.name, value);
+    if (id == 'input-pattern') {
+      toggleSections(field.options[select.val()]);
+    }
   });
 
-  $("#form").append(template);
+  $("#form").append(template).toggleSections(field.options[select.val()]);
 }
+
+
 
 function addColorFieldPicker(field) {
   var template = $("#colorTemplate").clone();
@@ -207,10 +314,10 @@ function addColorFieldPicker(field) {
   var input = template.find(".minicolors");
   input.attr("id", id);
 
-  if(!field.value.startsWith("rgb("))
+  if (!field.value.startsWith("rgb("))
     field.value = "rgb(" + field.value;
 
-  if(!field.value.endsWith(")"))
+  if (!field.value.endsWith(")"))
     field.value += ")";
 
   input.val(field.value);
@@ -241,7 +348,7 @@ function addColorFieldPicker(field) {
   greenSlider.val(components.g);
   blueSlider.val(components.b);
 
-  redInput.on("change", function() {
+  redInput.on("change", function () {
     var value = $("#" + id).val();
     var r = $(this).val();
     var components = rgbToComponents(value);
@@ -250,7 +357,7 @@ function addColorFieldPicker(field) {
     redSlider.val(r);
   });
 
-  greenInput.on("change", function() {
+  greenInput.on("change", function () {
     var value = $("#" + id).val();
     var g = $(this).val();
     var components = rgbToComponents(value);
@@ -259,7 +366,7 @@ function addColorFieldPicker(field) {
     greenSlider.val(g);
   });
 
-  blueInput.on("change", function() {
+  blueInput.on("change", function () {
     var value = $("#" + id).val();
     var b = $(this).val();
     var components = rgbToComponents(value);
@@ -268,7 +375,7 @@ function addColorFieldPicker(field) {
     blueSlider.val(b);
   });
 
-  redSlider.on("change", function() {
+  redSlider.on("change", function () {
     var value = $("#" + id).val();
     var r = $(this).val();
     var components = rgbToComponents(value);
@@ -277,7 +384,7 @@ function addColorFieldPicker(field) {
     redInput.val(r);
   });
 
-  greenSlider.on("change", function() {
+  greenSlider.on("change", function () {
     var value = $("#" + id).val();
     var g = $(this).val();
     var components = rgbToComponents(value);
@@ -286,7 +393,7 @@ function addColorFieldPicker(field) {
     greenInput.val(g);
   });
 
-  blueSlider.on("change", function() {
+  blueSlider.on("change", function () {
     var value = $("#" + id).val();
     var b = $(this).val();
     var components = rgbToComponents(value);
@@ -295,19 +402,19 @@ function addColorFieldPicker(field) {
     blueInput.val(b);
   });
 
-  redSlider.on("change mousemove", function() {
+  redSlider.on("change mousemove", function () {
     redInput.val($(this).val());
   });
 
-  greenSlider.on("change mousemove", function() {
+  greenSlider.on("change mousemove", function () {
     greenInput.val($(this).val());
   });
 
-  blueSlider.on("change mousemove", function() {
+  blueSlider.on("change mousemove", function () {
     blueInput.val($(this).val());
   });
 
-  input.on("change", function() {
+  input.on("change", function () {
     if (ignoreColorChange) return;
 
     var value = $(this).val();
@@ -336,8 +443,8 @@ function addColorFieldPalette(field) {
   var label = template.find(".control-label");
   label.text(field.label);
 
-  buttons.each(function(index, button) {
-    $(button).click(function() {
+  buttons.each(function (index, button) {
+    $(button).click(function () {
       var rgb = $(this).css('backgroundColor');
       var components = rgbToComponents(rgb);
 
@@ -358,6 +465,12 @@ function addColorFieldPalette(field) {
   });
 
   $("#form").append(template);
+
+
+  setTimeout(function () { //jquery is weird, let it init then hide it.
+    toggleSections($("#input-pattern option:selected").text());
+  }, 0);
+
 }
 
 function addSectionField(field) {
@@ -405,9 +518,12 @@ function setBooleanFieldValue(field, btnOn, btnOff, value) {
 function postValue(name, value) {
   $("#status").html("Setting " + name + ": " + value + ", please wait...");
 
-  var body = { name: name, value: value };
+  var body = {
+    name: name,
+    value: value
+  };
 
-  $.post(urlBase + name + "?value=" + value, body, function(data) {
+  $.post(urlBase + name + "?value=" + value, body, function (data) {
     if (data.name != null) {
       $("#status").html("Set " + name + ": " + data.name);
     } else {
@@ -418,25 +534,33 @@ function postValue(name, value) {
 
 function delayPostValue(name, value) {
   clearTimeout(postValueTimer);
-  postValueTimer = setTimeout(function() {
+  postValueTimer = setTimeout(function () {
     postValue(name, value);
   }, 300);
 }
 
 function postColor(name, value) {
-  $("#status").html("Setting " + name + ": " + value.r + "," + value.g + "," + value.b + ", please wait...");
+  $("#status").html("Setting " + name + ": " + value.r + "," + value.g + "," + value.b +
+    ", please wait...");
 
-  var body = { name: name, r: value.r, g: value.g, b: value.b };
+  var body = {
+    name: name,
+    r: value.r,
+    g: value.g,
+    b: value.b
+  };
 
-  $.post(urlBase + name + "?r=" + value.r + "&g=" + value.g + "&b=" + value.b, body, function(data) {
-    $("#status").html("Set " + name + ": " + data);
-  })
-  .fail(function(textStatus, errorThrown) { $("#status").html("Fail: " + textStatus + " " + errorThrown); });
+  $.post(urlBase + name + "?r=" + value.r + "&g=" + value.g + "&b=" + value.b, body, function (data) {
+      $("#status").html("Set " + name + ": " + data);
+    })
+    .fail(function (textStatus, errorThrown) {
+      $("#status").html("Fail: " + textStatus + " " + errorThrown);
+    });
 }
 
 function delayPostColor(name, value) {
   clearTimeout(postColorTimer);
-  postColorTimer = setTimeout(function() {
+  postColorTimer = setTimeout(function () {
     postColor(name, value);
   }, 300);
 }

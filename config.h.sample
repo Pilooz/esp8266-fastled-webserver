@@ -3,7 +3,7 @@
 //--------------------------------------------------------------------------------
 // AP mode name and password
 const char WiFiAPName[] = "LightControlAP";
-const char WiFiAPPSK[] = "";
+const char WiFiAPPSK[] = "mySecretPassword";
 
 // IP configuration for AP
 IPAddress WiFiIp(192, 168, 10, 1);
@@ -15,18 +15,24 @@ char* password = "";
 
 const bool apMode = false; // Whether if ESP8266 should connect to an existing WIFI or mount its own AP
 
-// IP configuration for AP
-IPAddress WiFiIp(192, 168, 4, 1);
-IPAddress WiFiNMask(255, 255, 255, 0);
-
 //--------------------------------------------------------------------------------
 // LEDs Strip configuration
 //--------------------------------------------------------------------------------
-#define NUM_STRIPS    4
+#define DATA_PIN      D5
 #define LED_TYPE      WS2811
 #define COLOR_ORDER   GRB
-const int data_pin_list = { D5, D6, D7, D8 };
-const int num_leds_list = { 200, 200, 200, 200 };
 
-#define MILLI_AMPS         2000 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
+// Define the number of strips
+#define NUM_STRIPS    4
+#define MAX_LEDS_PER_STRIP 60
+// please add one number of leds per strip needed
+const int num_leds_list[4] =  { 24, 50, 60, 60 };
+
+#define MILLI_AMPS         10000 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
 #define FRAMES_PER_SECOND  120  // here you can control the speed. With the Access Point / Web Server the animations run a bit slower.
+
+//--------------------------------------------------------------------------------
+// Specific scenarios configuration
+//--------------------------------------------------------------------------------
+#define TWINKLE_SPEED_FACTOR 5 // From 1 to 10 for updating twinkles scenarios
+#define TWINKLE_FASTCYCLE_THRESHOLD 1000 // Minimum cycle number for the fastcycle in twinkles

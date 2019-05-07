@@ -46,6 +46,7 @@ var patterns = [
   "Water"
 ];
 
+/*
 var ws = new ReconnectingWebSocket('ws://' + address + ':81/', ['arduino']);
 ws.debug = true;
 
@@ -72,6 +73,7 @@ ws.onmessage = function(evt) {
     }
   }
 }
+*/
 
 $(document).ready(function() {
   $("#status").html("Connecting, please wait...");
@@ -80,10 +82,13 @@ $(document).ready(function() {
     $("#status").html("Loading, please wait...");
     
     $.each(data, function(index, field) {
+      console.log(field);
       if (field.name == "power") {
         addBooleanField(field);
       } else if (field.name == "pattern") {
         addPatternButtons(field);
+      } else if (field.name == "brightness") {
+        addNumberField(field);
       }
     });
 
@@ -93,6 +98,56 @@ $(document).ready(function() {
 
   $("#status").html("Ready");
 });
+
+function addNumberField(field) {
+  var template = $("#numberTemplate").clone();
+
+  template.attr("id", "form-group-" + field.name);
+  template.attr("data-field-type", field.type);
+
+  var label = template.find(".control-label");
+  label.attr("for", "input-" + field.name);
+  label.text(field.label);
+
+  var input = template.find(".input");
+  var slider = template.find(".slider");
+  slider.attr("id", "input-" + field.name);
+  if (field.min) {
+    input.attr("min", field.min);
+    slider.attr("min", field.min);
+  }
+  if (field.max) {
+    input.attr("max", field.max);
+    slider.attr("max", field.max);
+  }
+  if (field.step) {
+    input.attr("step", field.step);
+    slider.attr("step", field.step);
+  }
+  input.val(field.value);
+  slider.val(field.value);
+
+  slider.on("change mousemove", function () {
+    input.val($(this).val());
+  });
+
+  slider.on("change", function () {
+    var value = $(this).val();
+    input.val(value);
+    field.value = value;
+    delayPostValue(field.name, value);
+  });
+
+  input.on("change", function () {
+    var value = $(this).val();
+    slider.val(value);
+    field.value = value;
+    delayPostValue(field.name, value);
+  });
+
+  $("#brigthnessSliderRow").append(template);
+}
+
 
 function addBooleanField(field) {
   var template = $("#booleanTemplate").clone();
@@ -135,26 +190,6 @@ function setBooleanFieldValue(field, btnOn, btnOff, value) {
   postValue(field.name, field.value);
 }
 
-function addColorButtons() {
-  var hues = 25;
-  var hueStep = 360 / hues;
-
-  var levels = 10;
-  var levelStep = 60 / levels;
-
-  for(var l = 20; l < 80; l += levelStep) {
-    for(var h = 0; h < hues; h++) {
-      addColorButton(h * hueStep, 100, l);
-    }
-  }
-
-  $('.grid-color').isotope({
-    itemSelector: '.grid-item-color',
-    layoutMode: 'fitRows'
-  });
-
-}
-
 var colorButtonIndex = 0;
 
 function addColorButton(h, s, l) {
@@ -173,6 +208,26 @@ function addColorButton(h, s, l) {
   });
 
   $("#colorButtonsRow").append(template);
+}
+
+function addColorButtons() {
+  var hues = 25;
+  var hueStep = 360 / hues;
+
+  var levels = 10;
+  var levelStep = 60 / levels;
+
+  for(var l = 20; l < 80; l += levelStep) {
+    for(var h = 0; h < hues; h++) {
+      addColorButton(h * hueStep, 100, l);
+    }
+  }
+
+  $('.grid-color').isotope({
+    itemSelector: '.grid-item-color',
+    layoutMode: 'fitRows'
+  });
+
 }
 
 function addPatternButtons(patternField) {

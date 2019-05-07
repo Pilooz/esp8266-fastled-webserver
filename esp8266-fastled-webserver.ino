@@ -469,7 +469,10 @@ void broadcastString(String name, String value)
   //  webSocketsServer.broadcastTXT(json);
 }
 
+boolean strip_is_modified = false;
+
 void loop() {
+  strip_is_modified = false;
   // Add entropy to random number generator; we use a lot of it.
   random16_add_entropy(random(65535));
 
@@ -526,7 +529,12 @@ void loop() {
   // Call the current pattern function once, updating the 'leds' array
   patterns[currentPatternIndex].pattern();
 
-  FastLED.show();
+  //FastLED.show();
+  // only update if theres a change, cuts out chance of flicker
+  if(strip_is_modified){
+    FastLED.show();
+    strip_is_modified = false;
+  }
 
   // insert a delay to keep the framerate modest
   FastLED.delay(1000 / FRAMES_PER_SECOND);
@@ -976,8 +984,6 @@ void strandTest()
         i = 0;
 
     }
-
-  // fill_solid(leds, NUM_LEDS, CRGB::Black);
     fill_solid(leds[s], num_leds_list[s], CRGB::Black);
 
     leds[s][i] = solidColor;
@@ -988,7 +994,8 @@ void showSolidColor()
 {
   for (int s = 0; s < NUM_STRIPS; s++) {
     fill_solid(leds[s], num_leds_list[s], solidColor);
-  } 
+  }
+  strip_is_modified = true; 
 }
 
 // Patterns from FastLED example DemoReel100: https://github.com/FastLED/FastLED/blob/master/examples/DemoReel100/DemoReel100.ino
@@ -999,6 +1006,7 @@ void rainbow()
     // FastLED's built-in rainbow generator
     fill_rainbow( leds[s], num_leds_list[s], gHue, 255 / num_leds_list[s]);
   }
+  strip_is_modified = true;
 }
 
 void rainbowWithGlitter()
@@ -1013,6 +1021,7 @@ void rainbowSolid()
   for (int s = 0; s < NUM_STRIPS; s++) {
     fill_solid(leds[s], num_leds_list[s], CHSV(gHue, 255, 255));
   }
+  strip_is_modified = true;
 }
 
 void confetti()
@@ -1024,6 +1033,7 @@ void confetti()
     // leds[pos] += CHSV( gHue + random8(64), 200, 255);
     leds[s][pos] += ColorFromPalette(palettes[currentPaletteIndex], gHue + random8(64));
   }
+  strip_is_modified = true;
 }
 
 void sinelon()
@@ -1041,6 +1051,7 @@ void sinelon()
     }
     prevpos = pos;
   }
+  strip_is_modified = true;
 }
 
 void bpm()
@@ -1053,6 +1064,7 @@ void bpm()
       leds[s][i] = ColorFromPalette(palette, gHue + (i * 2), beat - gHue + (i * 10));
     }
   }
+  strip_is_modified = true;
 }
 
 void juggle()
@@ -1089,6 +1101,7 @@ void juggle()
       curhue += hueinc;
     }
   }
+  strip_is_modified = true;
 }
 
 void fire()
@@ -1145,6 +1158,7 @@ for (int s = 0; s < NUM_STRIPS; s++) {
       nblend( leds[s][pixelnumber], newcolor, 64);
     }
   }
+  strip_is_modified = true;
 }
 
 void radialPaletteShift()
@@ -1203,6 +1217,7 @@ void heatMap(CRGBPalette16 palette, bool up)
       }
     }
   }
+  strip_is_modified = true;
 }
 
 void addGlitter( uint8_t chanceOfGlitter)
@@ -1212,6 +1227,7 @@ void addGlitter( uint8_t chanceOfGlitter)
       leds[s][ random16(num_leds_list[s]) ] += CRGB::White;
     }
   }
+  strip_is_modified = true;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -1292,6 +1308,7 @@ void colorwaves( CRGB* ledarray, uint16_t numleds, CRGBPalette16& palette)
 
     nblend( ledarray[pixelnumber], newcolor, 128);
   }
+  strip_is_modified = true;
 }
 
 // Alternate rendering function just scrolls the current palette
@@ -1303,4 +1320,5 @@ void palettetest( CRGB* ledarray, uint16_t numleds, const CRGBPalette16& gCurren
   for (int s = 0; s < NUM_STRIPS; s++) {
     fill_palette( ledarray, numleds, startindex, (256 / num_leds_list[s]) + 1, gCurrentPalette, 255, LINEARBLEND);
   }
+  strip_is_modified = true;
 }

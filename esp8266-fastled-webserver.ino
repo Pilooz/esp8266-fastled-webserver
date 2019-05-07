@@ -1163,7 +1163,7 @@ void heatMap(CRGBPalette16 palette, bool up)
     fill_solid(leds[s], num_leds_list[s], CRGB::Black);
  
     // Add entropy to random number generator; we use a lot of it.
-    random16_add_entropy(random(256));
+    random16_add_entropy(random(num_leds_list[s]));
 
     // Array of temperature readings at each simulation cell
     //static

@@ -211,12 +211,12 @@ void setup() {
   // No for loop to init leds strips, beacause the template CFastLED needs a const expr for the pin number
   // It does not compile with the following code :
    //
-  // const int data_pin_list[4] = {13, 14, 12, 0};
+  // const int data_pin_list[4] = {D5, D6, D7, D8}; //{13, 14, 12, 0};
   // for (int s = 0; s < NUM_STRIPS; s++) {
   //    FastLED.addLeds<LED_TYPE, data_pin_list[s], COLOR_ORDER>(leds[0], num_leds_list[s]);
   // }
   //
-  FastLED.addLeds<LED_TYPE, D3, COLOR_ORDER>(leds[0], num_leds_list[0]);
+  FastLED.addLeds<LED_TYPE, D5, COLOR_ORDER>(leds[0], num_leds_list[0]);
   if (NUM_STRIPS >= 2) {
     FastLED.addLeds<LED_TYPE, D6, COLOR_ORDER>(leds[1], num_leds_list[1]);
   }

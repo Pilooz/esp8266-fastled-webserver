@@ -11,6 +11,7 @@ var postValueTimer = {};
 
 var ignoreColorChange = false;
 
+// We can order the scenarios in the interface here 
 var patterns = [
   "Pride",
   "Color Waves",

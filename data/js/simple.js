@@ -13,36 +13,36 @@ var ignoreColorChange = false;
 
 // We can order the scenarios in the interface here 
 var patterns = [
-  "Pride",
-  "Color Waves",
-
-  "Rainbow Twinkles",
-  "Snow Twinkles",
-  "Cloud Twinkles",
-  "Incandescent Twinkles",
-
-  "Retro C9 Twinkles",
-  "Red & White Twinkles",
+  // Choice of most importants patterns
   "Blue & White Twinkles",
-  "Red, Green & White Twinkles",
+  "Cloud Twinkles",
+  "Cloud 2 Twinkles",
   "Fairy Light Twinkles",
-  "Snow 2 Twinkles",
+  "Forest Twinkles",
+  "Fire Twinkles",
   "Holly Twinkles",
   "Ice Twinkles",
-  "Party Twinkles",
-  "Forest Twinkles",
+  "Incandescent Twinkles",
   "Lava Twinkles",
-  "Fire Twinkles",
-  "Cloud 2 Twinkles",
   "Ocean Twinkles",
-
+  "Party Twinkles",
+  "Rainbow Twinkles",
+  "Retro C9 Twinkles",
+  "Red & White Twinkles",
+  "Red, Green & White Twinkles",
+  "Snow Twinkles",
+  "Snow 2 Twinkles",
+  "-", // This not a pattern, this is a separator
+  "Beat",
+  "Color Waves",
+  "Confetti",
+  "Juggle",
+  "Pride",
   "Rainbow",
   "Rainbow With Glitter",
-  "Solid Rainbow",
-  "Confetti",
   "Sinelon",
-  "Beat",
-  "Juggle",
+  "Solid Rainbow",
+  "-",
   "Fire",
   "Water"
 ];
@@ -232,6 +232,7 @@ function addColorButtons() {
 }
 
 function addPatternButtons(patternField) {
+  var tableOfTpl = {};
   $.each(patternField.options, function(index, pattern) {
     if($.inArray(pattern, patterns) == -1)
       return;
@@ -245,8 +246,19 @@ function addPatternButtons(patternField) {
       $(".grid-item-pattern").attr("class", "grid-item-pattern btn btn-default");
       $(this).attr("class", "grid-item-pattern btn btn-primary");
     });
+    //$("#patternGrid").append(template);
+    tableOfTpl[pattern] = template;
+  });
 
-    $("#patternGrid").append(template);
+  // Taking order in account
+  $.each(patterns, function(index, pattern) {
+    // Adding separator
+    console.log(index + " : " + pattern);
+    if ( pattern == "-" ){
+      $("#patternGrid").append("<hr/>");
+    } else {
+      $("#patternGrid").append(tableOfTpl[pattern]);
+    }
   });
 
   $('.grid-pattern').isotope({

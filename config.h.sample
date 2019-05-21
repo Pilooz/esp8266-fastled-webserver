@@ -13,6 +13,10 @@ IPAddress WiFiNMask(255, 255, 255, 0);
 char* ssid = "";
 char* password = "";
 
+// http basic authentication (usfull if Wifi mode is activated)
+const char* www_username = "admin";
+const char* www_password = "esp8266";
+
 const bool apMode = false; // Whether if ESP8266 should connect to an existing WIFI or mount its own AP
 
 //--------------------------------------------------------------------------------

@@ -492,9 +492,17 @@ void loop() {
     }
   }
 
-  // EVERY_N_SECONDS(10) {
+  // Some statistics, sometime...
+  EVERY_N_SECONDS(10) {
+    Serial.print("FPS : "); Serial.println(FastLED.getFPS());
+    int instant_power = 0;
+    for (int s = 0; s < NUM_STRIPS; s++) {
+      instant_power += calculate_unscaled_power_mW(leds[s], num_leds_list[s]);
+    }
+    Serial.print("Actual Power : "); Serial.print(instant_power);
+    Serial.print(" mW / "); Serial.print(5*MILLI_AMPS); Serial.println(" mW"); 
   //   Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
-  // }
+  }
 
   // change to a new cpt-city gradient palette
   EVERY_N_SECONDS( secondsPerPalette ) {

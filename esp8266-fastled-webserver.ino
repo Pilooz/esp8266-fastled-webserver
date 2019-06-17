@@ -78,7 +78,7 @@ CRGBPalette16 gTargetPalette( gGradientPalettes[0] );
 
 CRGBPalette16 IceColors_p = CRGBPalette16(CRGB::Black, CRGB::Blue, CRGB::Aqua, CRGB::White);
 
-uint8_t currentPatternIndex = 0; // Index number of which pattern is current
+uint8_t currentPatternIndex = 5; // Index number of which pattern is current
 uint8_t autoplay = 0;
 
 uint8_t autoplayDuration = 10;
@@ -532,6 +532,10 @@ void loadSettings()
     currentPaletteIndex = 0;
   else if (currentPaletteIndex >= paletteCount)
     currentPaletteIndex = paletteCount - 1;
+  Serial.println();
+  Serial.print("Current pattern is : ");
+  Serial.println(patterns[currentPatternIndex].name);
+
 }
 
 void setPower(uint8_t value)

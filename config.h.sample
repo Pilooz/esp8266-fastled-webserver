@@ -2,37 +2,32 @@
 // WIFI configuration
 //--------------------------------------------------------------------------------
 // AP mode name and password
-const char WiFiAPName[] = "LightControlAP";
-const char WiFiAPPSK[] = "mySecretPassword";
+const char* WiFiAPName = "LightControlAP";
+const char* WiFiAPPSK = "mySecretPassword";
 
 // IP configuration for AP
 IPAddress WiFiIp(192, 168, 10, 1);
 IPAddress WiFiNMask(255, 255, 255, 0);
 
 // Wi-Fi network to connect to (if not in AP mode)
-char* ssid = "";
-char* password = "";
+char* ssid = "ssid";
+char* password = "xxxxxx";
 
-// http basic authentication (usfull if Wifi mode is activated)
-const char* www_username = "admin";
-const char* www_password = "esp8266";
-
-const bool apMode = false; // Whether if ESP8266 should connect to an existing WIFI or mount its own AP
+const bool apMode = true; // Whether if ESP8266 should connect to an existing WIFI or mount its own AP
 
 //--------------------------------------------------------------------------------
 // LEDs Strip configuration
 //--------------------------------------------------------------------------------
-#define DATA_PIN      D5
-#define LED_TYPE      WS2811
+#define LED_TYPE      WS2812
 #define COLOR_ORDER   GRB
 
 // Define the number of strips
 #define NUM_STRIPS    4
-#define MAX_LEDS_PER_STRIP 60
+#define MAX_LEDS_PER_STRIP 300
 // please add one number of leds per strip needed
-const int num_leds_list[4] =  { 24, 50, 60, 60 };
+const int num_leds_list[4] =  { 85, 98, 168, 300 };
 
-#define MILLI_AMPS         10000 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
+#define MILLI_AMPS         25000 // IMPORTANT: set the max milli-Amps of your power supply (4A = 4000mA)
 #define FRAMES_PER_SECOND  120  // here you can control the speed. With the Access Point / Web Server the animations run a bit slower.
 
 //--------------------------------------------------------------------------------

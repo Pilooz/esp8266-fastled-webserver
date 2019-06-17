@@ -54,7 +54,8 @@ ESP8266HTTPUpdateServer httpUpdateServer;
 
 #include "FSBrowser.h"
 
-CRGB leds[NUM_STRIPS][MAX_LEDS_PER_STRIP];
+//CRGB leds[NUM_STRIPS][MAX_LEDS_PER_STRIP];
+CRGB** leds = new CRGB*[NUM_STRIPS];
 
 const uint8_t brightnessCount = 5;
 uint8_t brightnessMap[brightnessCount] = { 16, 32, 64, 128, 255 };
@@ -208,7 +209,12 @@ void setup() {
   delay(100);
   Serial.setDebugOutput(true);
 
-  // No for loop to init leds strips, beacause the template CFastLED needs a const expr for the pin number
+  // Init LED Strips
+  for(int s = 0; s < NUM_STRIPS; ++s) {
+    leds[s] = new CRGB[num_leds_list[s]];
+  }
+  
+  // No 'for' loop to init leds strips, beacause the template CFastLED needs a const expr for the pin number
   // It does not compile with the following code :
    //
   // const int data_pin_list[4] = {D5, D6, D7, D8}; //{13, 14, 12, 0};
@@ -216,6 +222,7 @@ void setup() {
   //    FastLED.addLeds<LED_TYPE, data_pin_list[s], COLOR_ORDER>(leds[0], num_leds_list[s]);
   // }
   //
+
   FastLED.addLeds<LED_TYPE, D5, COLOR_ORDER>(leds[0], num_leds_list[0]);
   if (NUM_STRIPS >= 2) {
     FastLED.addLeds<LED_TYPE, D6, COLOR_ORDER>(leds[1], num_leds_list[1]);
@@ -226,6 +233,12 @@ void setup() {
   if (NUM_STRIPS >= 4) {
     FastLED.addLeds<LED_TYPE, D8, COLOR_ORDER>(leds[3], num_leds_list[3]);
   }
+
+  // FastLED.addLeds<LED_TYPE, D5, COLOR_ORDER>(leds[0], num_leds_list[0]);
+  // FastLED.addLeds<LED_TYPE, D6, COLOR_ORDER>(leds[1], num_leds_list[1]);
+  // FastLED.addLeds<LED_TYPE, D7, COLOR_ORDER>(leds[2], num_leds_list[2]);
+  // FastLED.addLeds<LED_TYPE, D8, COLOR_ORDER>(leds[3], num_leds_list[3]);
+
 
   FastLED.setDither(false);
   FastLED.setCorrection(TypicalLEDStrip);
@@ -493,16 +506,16 @@ void loop() {
   }
 
   // Some statistics, sometime...
-  EVERY_N_SECONDS(10) {
-    Serial.print("FPS : "); Serial.println(FastLED.getFPS());
-    int instant_power = 0;
-    for (int s = 0; s < NUM_STRIPS; s++) {
-      instant_power += calculate_unscaled_power_mW(leds[s], num_leds_list[s]);
-    }
-    Serial.print("Actual Power : "); Serial.print(instant_power);
-    Serial.print(" mW / "); Serial.print(5*MILLI_AMPS); Serial.println(" mW"); 
+   //EVERY_N_SECONDS(5) {
+    // Serial.print("FPS : "); Serial.println(FastLED.getFPS());
+    // int instant_power = 0;
+    // for (int s = 0; s < NUM_STRIPS; s++) {
+    //   instant_power += calculate_unscaled_power_mW(leds[s], num_leds_list[s]);
+    // }
+    // Serial.print("Actual Power : "); Serial.print(instant_power/5);
+    // Serial.print(" mA / "); Serial.print(MILLI_AMPS); Serial.println(" mA"); 
   //   Serial.print( F("Heap: ") ); Serial.println(system_get_free_heap_size());
-  }
+  // }
 
   // change to a new cpt-city gradient palette
   EVERY_N_SECONDS( secondsPerPalette ) {

@@ -615,6 +615,7 @@ void setPattern(uint8_t value)
   currentPatternIndex = value;
 
   if (autoplay == 0) {
+    Serial.print("Current pattern is : ");Serial.println(patterns[currentPatternIndex].name);
     EEPROM.write(1, currentPatternIndex);
     EEPROM.commit();
   }

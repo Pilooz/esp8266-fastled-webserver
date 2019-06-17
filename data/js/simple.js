@@ -14,15 +14,21 @@ var ignoreColorChange = false;
 // We can order the scenarios in the interface here 
 var patterns = [
   // Choice of most importants patterns
+  "Fairy Light Twinkles",
+  "Forest Twinkles",
+  "Holly Twinkles",
+  "Incandescent Twinkles",
+  "Snow Twinkles",
+  "Snow 2 Twinkles",
+  "-", // This not a pattern, this is a separator
+  "Color Waves",
+  "Juggle",
+  "-", // This not a pattern, this is a separator
   "Blue & White Twinkles",
   "Cloud Twinkles",
   "Cloud 2 Twinkles",
-  "Fairy Light Twinkles",
-  "Forest Twinkles",
   "Fire Twinkles",
-  "Holly Twinkles",
   "Ice Twinkles",
-  "Incandescent Twinkles",
   "Lava Twinkles",
   "Ocean Twinkles",
   "Party Twinkles",
@@ -30,13 +36,9 @@ var patterns = [
   "Retro C9 Twinkles",
   "Red & White Twinkles",
   "Red, Green & White Twinkles",
-  "Snow Twinkles",
-  "Snow 2 Twinkles",
   "-", // This not a pattern, this is a separator
   "Beat",
-  "Color Waves",
   "Confetti",
-  "Juggle",
   "Pride",
   "Rainbow",
   "Rainbow With Glitter",

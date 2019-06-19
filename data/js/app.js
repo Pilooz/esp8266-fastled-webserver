@@ -11,6 +11,7 @@ var postValueTimer = {};
 
 var ignoreColorChange = false;
 
+/*
 var ws = new ReconnectingWebSocket('ws://' + address + ':81/', ['arduino']);
 ws.debug = true;
 
@@ -21,7 +22,7 @@ ws.onmessage = function(evt) {
     if(data == null) return;
     updateFieldValue(data.name, data.value);
   }
-}
+} */
 
 $(document).ready(function() {
   $("#status").html("Connecting, please wait...");

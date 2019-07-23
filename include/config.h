@@ -25,8 +25,7 @@ const bool apMode = true; // Whether if ESP8266 should connect to an existing WI
 #define NUM_STRIPS    4
 #define MAX_LEDS_PER_STRIP 300
 // please add one number of leds per strip needed
-//const int num_leds_list[4] =  { 85, 98, 168, 300 };
-const int num_leds_list[NUM_STRIPS] =  { 8, 8, 8, 8 };
+const int num_leds_list[4] =  { 85, 98, 168, 300 };
 
 // specific correction for each strip, if needed
 /* Color corrections from FastLED : 

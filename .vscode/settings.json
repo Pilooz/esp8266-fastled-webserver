@@ -1,0 +1,6 @@
+{
+    "terminal.integrated.env.osx": {
+        "PATH": "/Users/pgl/.platformio/penv/bin:/Users/pgl/.platformio/penv:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Library/Frameworks/Python.framework/Versions/3.5/bin:/usr/local/sbin:/usr/local/sbin:/Library/Frameworks/Python.framework/Versions/3.4/bin:/Users/pgl/bin:/usr/local/bin:/Users/pgl/.rbenv/shims:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/git/bin:/Users/pgl/developpement/lab_monitoring/monitoring:/Users/pgl/developpement/lab_monitoring/monitoring/daemon:/Users/pgl/developpement/lab_monitoring/monitoring/bin:/Users/pgl/developpement/lab_monitoring/utils:/Users/pgl/developpement/lab_monitoring/utils/config:/Users/pgl/developpement/lab_monitoring/utils/forDevices:/Users/pgl/developpement/lab_monitoring/utils/applescript",
+        "PLATFORMIO_CALLER": "vscode"
+    }
+}
